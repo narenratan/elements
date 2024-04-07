@@ -145,6 +145,13 @@ elseif (ELEMENTS_HOST_UI_LIBRARY STREQUAL "gtk")
       host/gtk3/key.cpp
       host/gtk3/window.cpp
    )
+elseif (ELEMENTS_HOST_UI_LIBRARY STREQUAL "x11")
+   set(ELEMENTS_HOST
+      host/x11/app.cpp
+      host/x11/base_view.cpp
+      host/x11/key.cpp
+      host/x11/window.cpp
+   )
 elseif (WIN32)
    set(ELEMENTS_HOST
       host/windows/utils.hpp
@@ -246,6 +253,9 @@ target_link_libraries(elements PUBLIC PkgConfig::libwebp)
 if (ELEMENTS_HOST_UI_LIBRARY STREQUAL "gtk")
    pkg_check_modules(GTK3 REQUIRED IMPORTED_TARGET gtk+-3.0)
    target_link_libraries(elements PRIVATE PkgConfig::GTK3)
+elseif (ELEMENTS_HOST_UI_LIBRARY STREQUAL "x11")
+   find_package(X11 REQUIRED)
+   target_link_libraries(elements PRIVATE X11)
 endif()
 
 ###############################################################################
@@ -283,6 +293,8 @@ endif()
 
 if(ELEMENTS_HOST_UI_LIBRARY STREQUAL "gtk")
     target_compile_definitions(elements PUBLIC ELEMENTS_HOST_UI_LIBRARY_GTK)
+elseif(ELEMENTS_HOST_UI_LIBRARY STREQUAL "x11")
+    target_compile_definitions(elements PUBLIC ELEMENTS_HOST_UI_LIBRARY_X11)
 elseif(ELEMENTS_HOST_UI_LIBRARY STREQUAL "cocoa")
     if(NOT APPLE)
         message(FATAL_ERROR "Only macOS supports ELEMENTS_HOST_UI_LIBRARY=cocoa")
@@ -302,7 +314,7 @@ elseif(ELEMENTS_HOST_UI_LIBRARY STREQUAL "win32")
         target_compile_definitions(elements PRIVATE _WIN32_WINNT=0x0A00)
     endif()
 else()
-    message(FATAL_ERROR "Invalid ELEMENTS_HOST_UI_LIBRARY=${ELEMENTS_HOST_UI_LIBRARY}. Set gtk, cocoa or win32.")
+    message(FATAL_ERROR "Invalid ELEMENTS_HOST_UI_LIBRARY=${ELEMENTS_HOST_UI_LIBRARY}. Set gtk, x11, cocoa or win32.")
 endif()
 
 ###############################################################################
