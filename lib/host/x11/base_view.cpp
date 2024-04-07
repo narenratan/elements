@@ -137,7 +137,7 @@ namespace cycfi { namespace elements
       cairo_xlib_surface_set_size(host_view_h->surface, attributes.width, attributes.height);
 
       cairo_push_group_with_content(view->host()->context, CAIRO_CONTENT_COLOR);
-      view->draw(view->host()->context, area);
+      view->draw(view->host()->context);
       cairo_pop_group_to_source(view->host()->context);
       cairo_paint(view->host()->context);
       XFlush(display);
@@ -411,11 +411,6 @@ namespace cycfi { namespace elements
    {
        std::cerr << "base_view::size(extent)" << std::endl;
        (void)p; // TODO
-   }
-
-   float base_view::hdpi_scale() const
-   {
-      return 1.0f;
    }
 
    void base_view::refresh()
