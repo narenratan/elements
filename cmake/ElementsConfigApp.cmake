@@ -75,24 +75,25 @@ source_group(Resources
 # The executable App
 
 if (APPLE)
-   add_executable(
+   add_library(
       ${ELEMENTS_APP_PROJECT}
-      MACOSX_BUNDLE
+      MODULE
       ${ELEMENTS_APP_SOURCES}
       ${ELEMENTS_RESOURCES}
       ${ELEMENTS_APP_RESOURCES}
    )
 elseif (UNIX AND NOT APPLE)
-   add_executable(
+   add_library(
       ${ELEMENTS_APP_PROJECT}
+      MODULE
       ${ELEMENTS_APP_SOURCES}
       ${ELEMENTS_RESOURCES}
       ${ELEMENTS_APP_RESOURCES}
    )
 elseif (WIN32)
-   add_executable(
+   add_library(
       ${ELEMENTS_APP_PROJECT}
-      WIN32
+      MODULE
       ${ELEMENTS_APP_SOURCES}
       ${ELEMENTS_RESOURCES}
       ${ELEMENTS_APP_RESOURCES}
@@ -109,10 +110,6 @@ elseif (WIN32)
             MSVC_RUNTIME_LIBRARY "MultiThreaded"
          )
       endif()
-
-      target_link_options(${ELEMENTS_APP_PROJECT} PRIVATE
-         /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup shcore.lib
-      )
 
       set_property(
          TARGET ${ELEMENTS_APP_PROJECT}
