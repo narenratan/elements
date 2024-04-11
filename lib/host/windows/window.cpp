@@ -158,7 +158,7 @@ namespace cycfi { namespace elements
       };
    }
 
-   window::window(std::string const& name, int style_, rect const& bounds)
+   window::window(std::string const& name, int style_, rect const& bounds, HWND native)
    {
       static init_window_class init;
 
@@ -169,15 +169,21 @@ namespace cycfi { namespace elements
       auto scale = GetDpiForSystem() / 96.0f;
       #endif
 
-      _window = CreateWindowW(
-         L"ElementsWindow",
-         wname.c_str(),
-         WS_OVERLAPPEDWINDOW,
-         bounds.left * scale, bounds.top * scale,
-         bounds.width() * scale, bounds.height() * scale,
-         nullptr, nullptr, nullptr,
-         nullptr
-      );
+      if (native)
+      {
+         _window = native;
+      }
+      else {
+	 _window = CreateWindowW(
+	    L"ElementsWindow",
+	    wname.c_str(),
+	    WS_OVERLAPPEDWINDOW,
+	    bounds.left * scale, bounds.top * scale,
+	    bounds.width() * scale, bounds.height() * scale,
+	    nullptr, nullptr, nullptr,
+	    nullptr
+	 );
+      }
 
       auto* info = new window_info{this};
       SetWindowLongPtrW(_window, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(info));
@@ -195,7 +201,10 @@ namespace cycfi { namespace elements
       if (hIcon)
          ::SendMessage(_window, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
 
-      ShowWindow(_window, SW_RESTORE);
+      if (!native)
+      {
+         ShowWindow(_window, SW_RESTORE);
+      }
    }
 
    window::~window()
