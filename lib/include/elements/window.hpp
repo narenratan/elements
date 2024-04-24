@@ -56,7 +56,7 @@ namespace cycfi { namespace elements
        , standard       = with_title | closable | miniaturizable | resizable
       };
 
-#if !defined(ELEMENTS_HOST_UI_LIBRARY_COCOA) || defined(__OBJC__)
+#if !defined(ELEMENTS_HOST_UI_LIBRARY_COCOA)
                            window(
                               std::string const& name
                             , int style_ = standard
@@ -70,6 +70,19 @@ namespace cycfi { namespace elements
                             , native_window_handle native_window = no_native_window
                            )
                             : window("", style_, bounds, native_window)
+                           {}
+#else
+                           window(
+                              std::string const& name
+                            , int style_ = standard
+                            , rect const& bounds = rect{20, 20, 660, 500}
+                           );
+
+                           window(
+                              int style_ = standard
+                            , rect const& bounds = rect{20, 20, 660, 500}
+                           )
+                            : window("", style_, bounds)
                            {}
 #endif
 
