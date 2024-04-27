@@ -152,8 +152,9 @@ namespace cycfi { namespace elements
             windowClass.lpfnWndProc = handle_event;
             windowClass.lpszClassName = L"ElementsWindow";
             windowClass.style = CS_HREDRAW | CS_VREDRAW;
-            if (!RegisterClassW(&windowClass))
-               MessageBoxW(nullptr, L"Could not register class", L"Error", MB_OK);
+            RegisterClassW(&windowClass);
+            // if (!RegisterClassW(&windowClass))
+            //    MessageBoxW(nullptr, L"Could not register class", L"Error", MB_OK);
          }
       };
    }

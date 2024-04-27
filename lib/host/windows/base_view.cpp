@@ -501,8 +501,9 @@ namespace cycfi { namespace elements
             windowClass.lpfnWndProc = WndProc;
             windowClass.lpszClassName = L"ElementsView";
             windowClass.style = CS_HREDRAW | CS_VREDRAW;
-            if (!RegisterClassW(&windowClass))
-               MessageBoxW(nullptr, L"Could not register class", L"Error", MB_OK);
+            RegisterClassW(&windowClass);
+            // if (!RegisterClassW(&windowClass))
+            //    MessageBoxW(nullptr, L"Could not register class", L"Error", MB_OK);
 
             auto pwd = fs::current_path();
             add_search_path(pwd / "resources");
